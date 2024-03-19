@@ -54,13 +54,25 @@ def prompt_augmentation(prompt, aug_style, tokenizer=None, repeat_num=4):
     return prompt
 
 
-def get_dataset(dataset_name):
+def get_dataset(dataset_name, pipe=None):
     if "jsonl" in dataset_name:
         dataset = load_jsonlines(dataset_name)
         prompt_key = "caption"
-    else:
+    elif dataset_name == "random":
+        dataset = []
+        for _ in range(2000):
+            k = random.randrange(pipe.tokenizer.model_max_length)
+            rand_tokens = random.sample(range(pipe.tokenizer.vocab_size), k)
+            dataset.append({"Prompt": pipe.tokenizer.decode(rand_tokens)})
+        prompt_key = "Prompt"
+    elif dataset_name == "ChristophSchuhmann/MS_COCO_2017_URL_TEXT":
+        dataset = load_dataset(dataset_name)["train"]
+        prompt_key = "TEXT"
+    elif dataset_name == "Gustavosta/Stable-Diffusion-Prompt":
         dataset = load_dataset(dataset_name)["test"]
         prompt_key = "Prompt"
+    else:
+        raise NotImplementedError
 
     return dataset, prompt_key
 

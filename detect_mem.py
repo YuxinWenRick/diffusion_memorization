@@ -37,7 +37,7 @@ def main(args):
 
     # dataset
     set_random_seed(args.gen_seed)
-    dataset, prompt_key = get_dataset(args.dataset)
+    dataset, prompt_key = get_dataset(args.dataset, pipe)
 
     args.end = min(args.end, len(dataset))
 
