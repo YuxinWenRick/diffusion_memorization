@@ -68,7 +68,7 @@ def get_dataset(dataset_name, pipe=None):
     elif dataset_name == "ChristophSchuhmann/MS_COCO_2017_URL_TEXT":
         dataset = load_dataset(dataset_name)["train"]
         prompt_key = "TEXT"
-    elif dataset_name == "Gustavosta/Stable-Diffusion-Prompt":
+    elif dataset_name == "Gustavosta/Stable-Diffusion-Prompts":
         dataset = load_dataset(dataset_name)["test"]
         prompt_key = "Prompt"
     else:
