@@ -16,6 +16,7 @@ We provide detecting, explaining, and (inference) mitigating methods separately 
 ## To reproduce the results in our paper
 ### Detect memorization
 1. Run detection:
+
 memorized prompts
 ```
 python detect_mem.py --run_name memorized_prompts --dataset examples/sdv1_500_memorized.jsonl --end 500 --gen_seed 0
