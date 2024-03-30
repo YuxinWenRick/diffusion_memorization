@@ -15,9 +15,7 @@ We provide detecting, explaining, and (inference) mitigating methods separately 
 
 ## To reproduce the results in our paper
 ### Detect memorization
-1. You may first download the memorized prompts dataset from this link and unzip it.
-
-2. Run detection:
+1. Run detection:
 memorized prompts
 ```
 python detect_mem.py --run_name memorized_prompts --dataset examples/sdv1_500_memorized.jsonl --end 500 --gen_seed 0
@@ -28,7 +26,7 @@ non-memorized prompts
 python detect_mem.py --run_name non_memorized_prompts --dataset Gustavosta/Stable-Diffusion-Prompts --end 500 --gen_seed 0
 ```
 
-3. Visualize resuts: you could use `examples/det_mem_viz.ipynb`.
+2. Visualize resuts: you could use `examples/det_mem_viz.ipynb`.
 
 ### Explain memorization
 You could check out `examples/token_wise_significance.ipynb`.
