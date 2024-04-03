@@ -119,7 +119,15 @@ def main(args):
 
         gen_images = outputs.images
 
-        gt_images = [dataset[i]["image"]]
+        if "groundtruth" in args.dataset:
+            gt_images = []
+
+            curr_index = dataset[i]["index"]
+            for filename in glob.glob(f"{args.dataset}/gt_images/{curr_index}/*.png"):
+                im = Image.open(filename)
+                gt_images.append(im)
+        else:
+            gt_images = [dataset[i]["image"]]
 
         all_gen_images.append(gen_images)
         all_gt_images.append(gt_images)

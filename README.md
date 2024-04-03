@@ -93,6 +93,14 @@ Then, you can use the fnference-time mititgation script to evaluate the memoriza
 python run_mem.py --run_name baseline --unet_id finetuned_checkpoints/checkpoint-20000/unet --dataset memorized_images --end 200 --gen_seed 0 --reference_model ViT-g-14 --with_tracking
 ```
 
+### Calculate memorization with sdv1_500_memorized.jsonl
+You can first download all the groundtruth images [here](https://drive.google.com/file/d/1mdhkyTlDBZIW6LaO_Q1J3roaU2Be0Nvo/view?usp=sharing).
+
+Then, run
+```
+python inference_mem.py --run_name no_mitigation --dataset sdv1_500_mem_groundtruth --end 500 --gen_seed 0 --reference_model ViT-g-14 --with_tracking
+```
+
 ## Suggestions and pull requests are welcome!
 
 ## Cite our work

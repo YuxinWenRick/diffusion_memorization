@@ -168,3 +168,4 @@ finetuned_checkpoints/
 memorized_images/
 *.zip
 *.pt
+*groundtruth

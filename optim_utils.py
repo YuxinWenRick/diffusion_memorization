@@ -80,45 +80,49 @@ def get_dataset(dataset_name, pipe=None):
 def get_dataset_finetune(
     dataset_name, non_mem_dataset=None, end=None, repeats=1, non_mem_ratio=0
 ):
-    all_files = glob.glob(f"{dataset_name}/*.jpg")
-    all_files.sort()
-
-    if end is not None:
-        all_files = all_files[:end]
-
-    all_data = {"image": [], "text": []}
-    for file in all_files:
-        f = open(file.replace("jpg", "txt"), "r")
-        captions = f.read()
-
-        all_data["image"].append(file)
-        all_data["text"].append(captions)
-
-    all_data["image"] = all_data["image"] * repeats
-    all_data["text"] = all_data["text"] * repeats
-    mem_len = len(all_data["image"])
-
-    if non_mem_dataset is not None:
-        ### add non-mem data points
-        all_files = glob.glob(f"{non_mem_dataset}/*.jpg")
+    if "groundtruth" in dataset_name:
+        dataset = load_jsonlines(f"{dataset_name}/{dataset_name}.jsonl")
+        prompt_key = "caption"
+    else:
+        all_files = glob.glob(f"{dataset_name}/*.jpg")
         all_files.sort()
 
-        for file in all_files:
-            if len(all_data["image"]) >= mem_len * (1 + non_mem_ratio):
-                break
+        if end is not None:
+            all_files = all_files[:end]
 
+        all_data = {"image": [], "text": []}
+        for file in all_files:
             f = open(file.replace("jpg", "txt"), "r")
             captions = f.read()
 
             all_data["image"].append(file)
             all_data["text"].append(captions)
 
-        all_data["image"] = all_data["image"][: int(mem_len * (1 + non_mem_ratio))]
-        all_data["text"] = all_data["text"][: int(mem_len * (1 + non_mem_ratio))]
-        ### add non-mem data points
+        all_data["image"] = all_data["image"] * repeats
+        all_data["text"] = all_data["text"] * repeats
+        mem_len = len(all_data["image"])
 
-    dataset = Dataset.from_dict(all_data).cast_column("image", datasets.Image())
-    prompt_key = "text"
+        if non_mem_dataset is not None:
+            ### add non-mem data points
+            all_files = glob.glob(f"{non_mem_dataset}/*.jpg")
+            all_files.sort()
+
+            for file in all_files:
+                if len(all_data["image"]) >= mem_len * (1 + non_mem_ratio):
+                    break
+
+                f = open(file.replace("jpg", "txt"), "r")
+                captions = f.read()
+
+                all_data["image"].append(file)
+                all_data["text"].append(captions)
+
+            all_data["image"] = all_data["image"][: int(mem_len * (1 + non_mem_ratio))]
+            all_data["text"] = all_data["text"][: int(mem_len * (1 + non_mem_ratio))]
+            ### add non-mem data points
+
+        dataset = Dataset.from_dict(all_data).cast_column("image", datasets.Image())
+        prompt_key = "text"
 
     return dataset, prompt_key
 
